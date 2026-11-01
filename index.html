@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Instagram Live Dashboard – Dubai Holding & Mubadala</title>
+<style>
+  :root{--bg:#f4f5f7;--card:#fff;--ink:#1a1f2b;--muted:#6b7280;--accent:#0b2545;--line:#e5e7eb}
+  @media (prefers-color-scheme:dark){:root{--bg:#0f1218;--card:#1a1f2b;--ink:#f1f3f6;--muted:#9aa3b2;--accent:#8fb3ff;--line:#2a3140}}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+  header{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;padding:18px 24px;background:var(--card);border-bottom:1px solid var(--line)}
+  h1{margin:0;font-size:20px}
+  .sub{color:var(--muted);font-size:13px}
+  button,select{font:inherit;padding:8px 12px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+  button{background:var(--accent);color:#fff;border:none;cursor:pointer}
+  .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:20px;padding:20px 24px}
+  .col{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+  .prof{display:flex;gap:12px;align-items:center;margin-bottom:12px}
+  .prof img{width:52px;height:52px;border-radius:50%;object-fit:cover;background:#ddd}
+  .prof h2{margin:0;font-size:16px}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+  .kpi{border:1px solid var(--line);border-radius:10px;padding:8px;text-align:center}
+  .kpi b{display:block;font-size:17px}
+  .kpi span{font-size:11px;color:var(--muted)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+  .post{border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  .post a{display:block;aspect-ratio:1/1;background:#ccc;position:relative;color:#fff;text-decoration:none}
+  .post img{width:100%;height:100%;object-fit:cover}
+  .ph{display:flex;align-items:center;justify-content:center;height:100%;font-size:12px;background:#334}
+  .tag{position:absolute;top:6px;left:6px;background:rgba(0,0,0,.65);font-size:10px;padding:2px 6px;border-radius:10px}
+  .pb{padding:8px;font-size:12px}
+  .cap{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:4px}
+  .meta{color:var(--muted);font-size:11px}
+  .msg{padding:14px;border:1px dashed var(--line);border-radius:10px;color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+<header>
+  <div><h1>Instagram Live Dashboard</h1><div class="sub" id="status" aria-live="polite">Loading…</div></div>
+  <div style="display:flex;gap:8px">
+    <select id="count" aria-label="Posts per account">
+      <option value="6">6 posts</option><option value="12" selected>12 posts</option><option value="24">24 posts</option>
+    </select>
+    <button type="button" id="refresh">Refresh now</button>
+  </div>
+</header>
+<div class="cols" id="cols"></div>
+<script>
+/* Reads data.json, which GitHub refreshes every hour. No token in this file. */
+const JSON_URL = "data.json";
+const AUTO_REFRESH_MIN = 30;
+
+const $ = id => document.getElementById(id);
+const esc = s => (s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const num = n => (n==null?"–":Number(n).toLocaleString());
+const dt  = d => new Date(d).toLocaleDateString("en-GB",{day:"2-digit",month:"short"});
+
+function renderAccount(a, limit){
+  const posts = ((a.media && a.media.data) || []).slice(0,limit);
+  const likes = posts.reduce((s,p)=>s+(p.like_count||0),0);
+  const comm  = posts.reduce((s,p)=>s+(p.comments_count||0),0);
+  const avgEng = posts.length && a.followers_count ? (((likes+comm)/posts.length)/a.followers_count*100).toFixed(2)+"%" : "–";
+  return `<section class="col">
+    <div class="prof"><img src="${a.profile_picture_url||""}" alt="">
+      <div><h2>${esc(a.name||a.username)}</h2>
+      <a class="sub" href="https://www.instagram.com/${esc(a.username)}/" target="_blank" rel="noopener">@${esc(a.username)}</a></div></div>
+    <div class="kpis">
+      <div class="kpi"><b>${num(a.followers_count)}</b><span>Followers</span></div>
+      <div class="kpi"><b>${num(a.media_count)}</b><span>Total posts</span></div>
+      <div class="kpi"><b>${num(likes)}</b><span>Likes (shown)</span></div>
+      <div class="kpi"><b>${avgEng}</b><span>Avg engagement</span></div>
+    </div>
+    <div class="grid">${posts.map(p=>{
+      const img = p.media_type==="VIDEO" ? p.thumbnail_url : p.media_url;
+      const lbl = {IMAGE:"Image",VIDEO:"Reel",CAROUSEL_ALBUM:"Carousel"}[p.media_type]||"";
+      return `<article class="post"><a href="${p.permalink}" target="_blank" rel="noopener">
+        ${img?`<img src="${img}" alt="" loading="lazy">`:`<div class="ph">Open post ↗</div>`}<span class="tag">${lbl}</span></a>
+        <div class="pb"><div class="cap">${esc(p.caption)}</div>
+        <div class="meta">${dt(p.timestamp)} · ♥ ${num(p.like_count)} · 💬 ${num(p.comments_count)}</div></div></article>`;
+    }).join("")}</div></section>`;
+}
+
+async function load(){
+  const limit = +$("count").value;
+  $("status").textContent = "Loading latest posts…";
+  try{
+    const r = await fetch(JSON_URL + "?t=" + Date.now(), {cache:"no-store"});
+    if(!r.ok) throw new Error("data.json not found yet – run the GitHub workflow once");
+    const data = await r.json();
+    $("cols").innerHTML = data.map(a=>a.error
+      ? `<section class="col"><div class="msg">@${esc(a.username)}: could not load (${esc(a.error)})</div></section>`
+      : renderAccount(a,limit)).join("");
+    $("status").textContent = "Live · page loaded " + new Date().toLocaleTimeString() + " · data refreshes hourly";
+  }catch(e){
+    $("cols").innerHTML = `<div class="msg">${esc(e.message)}</div>`;
+    $("status").textContent = "Not connected";
+  }
+}
+$("refresh").addEventListener("click",load);
+$("count").addEventListener("change",load);
+load();
+setInterval(load, AUTO_REFRESH_MIN*60000);
+</script>
+</body>
+</html>
