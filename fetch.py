@@ -2,7 +2,7 @@ import json, os, urllib.request, urllib.parse
 
 TOKEN = os.environ["IG_TOKEN"]
 USER_ID = os.environ["IG_USER_ID"]
-ACCOUNTS = ["dubaiholding", "mubadala", "nakheel", "publicinvestmentfund"]  # add more handles here
+ACCOUNTS = ["dubaiholding", "mubadala", "nakheelofficial", "emaardubai", "adq_official", "publicinvestmentfund"]  # add more handles here
 FIELDS = ("business_discovery.username({h}){{username,name,profile_picture_url,"
           "followers_count,media_count,media.limit(24){{caption,media_type,media_url,"
           "thumbnail_url,permalink,timestamp,like_count,comments_count}}}}")
