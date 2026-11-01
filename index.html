@@ -3,41 +3,56 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Instagram Live Dashboard – Dubai Holding & Mubadala</title>
+<title>Instagram Live Dashboard – Dubai Holding</title>
 <style>
-  :root{--bg:#f4f5f7;--card:#fff;--ink:#1a1f2b;--muted:#6b7280;--accent:#0b2545;--line:#e5e7eb}
-  @media (prefers-color-scheme:dark){:root{--bg:#0f1218;--card:#1a1f2b;--ink:#f1f3f6;--muted:#9aa3b2;--accent:#8fb3ff;--line:#2a3140}}
+  /* Dubai Holding brand colours */
+  :root{
+    --dh-black:#101820; --dh-grey:#54585A; --dh-beige:#C5B9AC; --white:#FFFFFF;
+    --bg:#F6F4F1; --card:#FFFFFF; --ink:#101820; --muted:#54585A; --line:#E4DED7; --accent:#101820;
+  }
   *{box-sizing:border-box}
   body{margin:0;font-family:Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--ink)}
-  header{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;padding:18px 24px;background:var(--card);border-bottom:1px solid var(--line)}
-  h1{margin:0;font-size:20px}
+  header{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center;padding:14px 24px;background:var(--white);border-bottom:4px solid var(--dh-beige)}
+  .brand{display:flex;align-items:center;gap:18px}
+  .brand img{height:52px;width:auto;display:block}
+  .brand .div{width:1px;height:40px;background:var(--line)}
+  h1{margin:0;font-size:19px;color:var(--dh-black);letter-spacing:.3px}
   .sub{color:var(--muted);font-size:13px}
-  button,select{font:inherit;padding:8px 12px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
-  button{background:var(--accent);color:#fff;border:none;cursor:pointer}
+  button,select{font:inherit;padding:8px 14px;border-radius:6px;border:1px solid var(--line);background:var(--white);color:var(--ink)}
+  button{background:var(--dh-black);color:var(--white);border:none;cursor:pointer}
+  button:hover{background:var(--dh-grey)}
+  button:focus,select:focus{outline:2px solid var(--dh-beige);outline-offset:2px}
   .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:20px;padding:20px 24px}
-  .col{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+  .col{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--dh-grey);border-radius:10px;padding:16px}
   .prof{display:flex;gap:12px;align-items:center;margin-bottom:12px}
-  .prof img{width:52px;height:52px;border-radius:50%;object-fit:cover;background:#ddd}
-  .prof h2{margin:0;font-size:16px}
+  .prof img{width:52px;height:52px;border-radius:50%;object-fit:cover;background:var(--dh-beige)}
+  .prof h2{margin:0;font-size:16px;color:var(--dh-black)}
+  .prof a{color:var(--dh-grey)}
   .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
-  .kpi{border:1px solid var(--line);border-radius:10px;padding:8px;text-align:center}
-  .kpi b{display:block;font-size:17px}
+  .kpi{background:var(--bg);border-radius:8px;padding:10px 6px;text-align:center}
+  .kpi b{display:block;font-size:17px;color:var(--dh-black)}
   .kpi span{font-size:11px;color:var(--muted)}
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
-  .post{border:1px solid var(--line);border-radius:10px;overflow:hidden}
-  .post a{display:block;aspect-ratio:1/1;background:#ccc;position:relative;color:#fff;text-decoration:none}
+  .post{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--white)}
+  .post a{display:block;aspect-ratio:1/1;background:var(--dh-beige);position:relative;color:#fff;text-decoration:none}
   .post img{width:100%;height:100%;object-fit:cover}
-  .ph{display:flex;align-items:center;justify-content:center;height:100%;font-size:12px;background:#334}
-  .tag{position:absolute;top:6px;left:6px;background:rgba(0,0,0,.65);font-size:10px;padding:2px 6px;border-radius:10px}
+  .ph{display:flex;align-items:center;justify-content:center;height:100%;font-size:12px;background:var(--dh-grey)}
+  .tag{position:absolute;top:6px;left:6px;background:rgba(16,24,32,.8);font-size:10px;padding:2px 7px;border-radius:10px}
   .pb{padding:8px;font-size:12px}
   .cap{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:4px}
   .meta{color:var(--muted);font-size:11px}
-  .msg{padding:14px;border:1px dashed var(--line);border-radius:10px;color:var(--muted);font-size:13px}
+  .msg{padding:14px;border:1px dashed var(--dh-beige);border-radius:8px;color:var(--muted);font-size:13px}
+  footer{padding:6px 24px 20px;color:var(--muted);font-size:11px}
+  @media (max-width:520px){.brand .div{display:none}.kpis{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
 <header>
-  <div><h1>Instagram Live Dashboard</h1><div class="sub" id="status" aria-live="polite">Loading…</div></div>
+  <div class="brand">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIQAAABYCAIAAAC72sikAAAPq0lEQVR4nO2daVwTRx/HR+snhgApEJGAqLSgFpBDbX0QUUorPl6gNUX7sdQqqEUtR6HWlhT18cAiyoN4YSs+rVdVnjyildoKFKkRKCiHXEWpZ4RECdqAEPKiPi+2zzDsld1k8cG63w8vdmb/OzO7v52Z/xwbBjx58gTwPBX++P2+KirMPnaNhd8cUoOBT7lAzzPqjR8OFFtSKQEAGPQ0S/M805oa3ZlbPfz8f2hs+JrxNNAp9jzKOm8TOX3wCE8aswF8n9HXdNcp78oiB9gJXjpXMPDFoTSWfM3oW7rrlKrlKwEA9glR9EoAvmb0KZj7ZKhUC8ZJR3xbZNSerxl9SPMnSwyVagCAfewaJva8GH1Fy/ql+qLfAACi2T407iwKL0af8PDQ1scnirFjSex6hlfxYnDP47wj2uSvsWPbGBm9O4vCi9GLx3lHuuuU5qTQXadUr0/Bjl9wFdu+G8f8Wl6MXlgGh2s2y03W44/f76uWr3zSZsCCkoglRt1ZFF4MPJKI5arlK03QA3NkoRLCQFexbDWrFHgx8FgGhw/2Gq5avrKr9CyrCzVpazFHFkOydBXbrHkxSLCPSXzSZri3JEGn2MPwEu3eROg+AQAsF/ozdGdReDFIGOwZYLnQHwBwX57BRA+dYs/DDAUMDrATOMSnmJAvLwY5DvEpA+wEgIEe3XXK+/IMNMYmPIRVvw3hxSBn4ItD7aIWYcf35Rkt65eSmnXfqcPmASEvuIolq5JNzNS0y54HbBd/9oKrGDt+fKKYqMcfv9/XrF0F3SeMoXGxJufIi0GHNKlnJoOoB5wHhAgDXS2Dw03OjheDDgu/OcJAVxh8fKK4OWHBH7/fB8g8IIp9TKI52fHrGUbovlN3d/p8NEYwTmo9cwacfYLYRE4fsmaXOXnxYhinNTX6UdZ5ehsmq6pG4Zsp49itSMLcXDqbqEVmKgF4MZgw8MWh9glRNAYvuIptF3/GQUbmJ/E8IJatFoyTUp1FnS5z4MVgCtU6tjDQ1YRpKFJ4MZhi4TdHNNuHGG8vT+UqC14MFkhi1+N6clarqkbhxWDB4BGeNuEhMDjATsBqVdUovBjssH03Dk5YMdkkyApeDHYMfHGoJGIJAEAwTsp2VdV44twm9zwglq0WBroy3CTIikHbU9Pu3lU1/XbjcWcnFnVfq32gfQgAsJfYDpVIAACWIpGb68teYz1DQuc4SB1YZaDIVvx88RIaM3y488dr4umvio3pMYiIWOLj602ffnVNLYy5eVfV2aUXWQhfGu6Mxfh4jTWt8FSEN+iT2i3eNCMF+2EvEyMHBL4eXHetiXkqLs5OC9+eb/RpQmJj4o8pctAYz9FuFwqNTPWgZc1MT5WFyZinT0OQv59c/imNtEw48GXWZ//YwuQuaCAVg3UzdUvVnJK+e6Sbx/bUNJOL8v+isLh02ux5ZpY8bfdeAEDdtSbOnwCJGEH+fpnpqbVXSmqvlGSmp66N+zDI3w9n09mlT0nfvSBskUat4bZA5rNINu/BvRvY39b1cs/RbjiDlPTdBXkFpiUeGxOPteEAgIOHj3J7+yRiODpKZWEyB6mDg9RBFib7eE38yexj+bk5Ewm1u7C4NCLyAw5LwznLVkReKDxPLPn+L7NMSE2j1uR8/wMMPtA+TE42ZRcIFUybKR9f79zcHGIVKau6ina2/ZPkLRtxMbWNjSakEx39UWeXHo3J+f6H6qqrppesN+z6jJPZx4hv2TFFDocF6guIPTZsapijyFYUFpfiIju79Fu2fGF6yXrDugMnvmUAgIydu7koTF9BbNmJHYlRdu3dTxpfWFyqyFaQnmILazF8fL2JlaPkyhVOStNHEFt2H6+xrFLYnppGMwD4Yvs/TSkWAVNG4G6ueB/5gfZhP3SrMJI+34AbiLg4OyUmrmWegkatOXj4KAwS38VbqmZO3FxTxJg6ZTIxUnnRrG9MOKS6pjY2Jj42Jn5B2CIP7wmZ/zqEnnVxdjp7WsFqKJ6cnAL7GHuJbW5uDrGV27X/gPmv419wbqruWtMxRc4xRU5hcSmuow7y9yv/RclKieqqq6g7G/HeuwCA6FV4h76zS2++m/sXFIOGwuJSD+8JrJqURPk66M7aS2yxeSBZmIzo5ZvvVf4FxcBmEBbJ5i2SzQvy97OX2KJnH2gfYnMHTJJSZCvKkOe7Kalnw6Bc/inRPlG+ztRSA2CaGDdv3SZGBkwJMKccHILNIOzMSNuZkXYy+1j91StRSxfjbAqLSyOXrjCaFOomeY52Q+crfXy9Q6dPw9mXVV01x801RYyyssu4GHuJLfOGGM7VU8G5Y7Zp8waiHmfO59NntD017ZaqGQaJ/UTy1k0iCyEuMmmTid8DABPE0Kg1v1RW4SInTZhAZe81Fr9ej94hKTjHzMbGhnnxqNi0eQPxwdF4gBq1Ztf+AzAY5O9HnMZ3kDrMmzUDF/lA+zDp8w2mFZL9CDw5BTc/AwCIif2Qyt7W1oYYeYB2nu77739Eg28Gm7OK0wNca2IC7jZJewgAQGLiWlyfBAA4dPykaZWbnRgFeQWon4cR5O9Hs1wjC5MRX8lTp7+jsteoNeh4njjCMhnma2jVVVfRcWLo9GlUN+ggdcCcXZTOLn3iZ0kmlJCFGAV5BREro3HVwl5iu2uXkcmAv43zxcWUVV2l8i+joz9CBwdBr09lXkIaSLOjcjpiP/oYHosshMlbN9Gk/PGaeGLlOHM+34QlE0ZiaNSa2Jh4ohIiC+GuHduMdt2kdTwlfXdsTDxanQvyCmbPnofOjLo4OzFf36XhwJdZaAeAEeTvR1pyRbYCrUPzZs0weoOoy9sTyX4MSLIG7jnabcpkf18fLwDAzxcvNf12o7bxGrGfcHF2OrB/L8P1ZJqVahdnJ0uRCNtFgMaLLIQH9+0y2mEQUw7y91u44M/Otqq65uKlYmIDRTMp4uE9AVZNkYWwTFnIxFF8PWg6MZet6+XLVkSS2pOugZP8emfdtSb65lVkIZw3a8bODBbj2J0ZaS0tauJ6AKBwrhgqQUphcSlpRpCJvt4Hs/aTPuKkzzegjWT0B8sYuuzRqz6IisNv3knbvZdKDFLYdeCeo93Wxn1YpixkpQTGyexjW9fLic0rkSB/vzJlIVdOFMpEX+/M9NTc3BzSR6xRaw4dPwmDcPKDCaQTJA+0D1ktgw7IP59fWVV9964KAIDunoJgU/9Tp0wOmBLAyb6jgryCM9/lYjudsCqI7XGyFInGj/N9++35rLbSVFddLS8rr6mtAwB0tHf8dusWzsDVxcXK2mrqlMk0+30wNGoNOvJwGzWKVUlwl2PY2NiQvlXk+6b4b/r6D3/BicJnF16MfgQvRj+CF6MfwYvRj+DF6EfwYvQjeDH6EYMaGq4/7mjHApZW1u7uo4hGqI3UUers7ESfaEPD9dr6Xzu7umCM5xi3V18bb/Qqtrk87mhv7+y6c/cejBwxfJi1yMJoXhjhUR+hwSOZ+LUALAuqx4Ir9ugxo8Ria6Nlxj0ZicTO18sDu9lBR7JP3W5uwU6MdHLcsu4TYhKoTXDApPfDF1Bldrm84tS5fGgMyVOWCA+fmDJxwluhM6lKzDwXLKP0rMOUp7MOSyV2rwdMmjMTv2eAFbBIcZHvUQnMxAYAcPZc/g8FRY86Ooinjp/OHecxZuH8UC7/59LeL78prqhCY0Y6OcLnqzcY8pQlNQ2N69bGGX2DTMDGykpvMOgNf/5InVrbdvx07g8FRasjF9O81wzJPHwigbZ+0KDTtaek7yO+oCiV9Y1D7JSciYFTIjhgEqwE2YrvTuf9hMWrtW0bU9I51wO+lTpd+495F34sUmKqPOro2LHvQNR7Cxk2XFToDYasI8dNKLZO174xJV2tbYMx4zzGzAp+E9NVp2v/+dIvF5Ql+m7DW6EzuenAL5dXoErMDX7j/fAFsNxhspC5wW/As2pt26kz5zjJl4hYbB0mC0nb/LmNlRUWozcYMg+f0OnazUxZrW1LSd/H9qqMzIOoEu/MnZ0QEwVrmFhsPWfmtO1bkj6NWykWW3Mjxqlz+fB4pJNjmCwEZxAmC4FPBwBwsaxvPyEQi61XR/ZslNIbDEeO0/1PNobcbm7ZkZHJ3P5yecWvN27BYDB1H4Z14ByI0dBwHW0QJ1E0CIGTJsJjvcFwubzC/KxpcHcf9crLLjBYUVvPSbKV9Y3ZCsqtLTiKSsrgsVAgeCt0Jr09B2KUXalEg1Mn/43UbKzHK2iwrpHFx+emMQb5jkRvMKiMbZ5jyOm8nwqLLhm3A6Ch6SY8dnd7yWh/06sD17Rq5Ru3EY00rVqaJFrb2tAgVZbmuzRseWnEMDSoblEbHbtQERwwKU9ZAoNHFWekQ4fS35FK1QxdOwDAiGHDaIwxeomhNxjoPTBS2h7p4PFIJ0e2lz8TeI5xk0jsjp/OxYJ6g2FP1qHkdZ/QvOzqll6/P4y+Gd8cOYlKizHSybGXGEKBwGGIhJiuplWLikxDd3c3E7NnkTkzp2m1bfAhPurowHx0hpe3d3YZteklhsMQCekIXL5xG02NsRAOhseoG4fDfOeSLerWXoWxtDJ3ZPN++ILWtrbK+j+/IVdr2776+iiVsdSx1w9MonM2nmN6vkIrr6qBw3IOBn3DnRxRB66h4TppY3qlstdXPWiB+ojG6z0+glAg4KTTSoiJ2rxtJ7xfKAwRXP+E9qyvvjYeDkKv3bgFxeDAmxoxvFfXVFv/K6lZRXUNPBYKBGYOiY2i07XjnBmuUo6JipBK7JhYor51Q9NNo20DB2IEBU4WCnp+RrGopIyYq0rVjL5EUyZSfs/BFV99fRTt5xbOD+UqZbHYet3aOHQMS4WvV8+3KXqDwei8Azcj8L8H9mznftTRgWtJdbr29H09H2TYWFkZHf6YyY6MTFT7ucFvmOzUkoKN8NFXkJQ5M6ehdShPWXIWmaogws1EYZgs5M69e/D+K+sb5Ru3TQucbC2yULe2oVPHQoFgdeRio8Of8qqaa/9rl7u7uzG/gLjeALl558/usayypv5aEzpT7T/elzg9Yz7u7qMSVi7bsnMvvVlk+Ds79h2AdfT46dyS8opJr42XDrFTt7Y1Xm9Cx3CczdomxEShE7e3m1uyvv03zkYqsYsMf4dJR/qoo4N06p8KOCuMYmNlJQuZERRI8hMCnODuPuqdubPh4IPKJmHlsj1Zh+Dt3G5uuU12yeiXXQYNQ7bPDqPYSovGS6j7rlUr3p9Y7lVUUtbQdBM3LmGy1EOVOymWVtboYgkuL0cH+/E+XubLAItE5RZjd1RSXkFj4+4+avf2TWfP5V9QlhBdfxsrK4/RbqGzgp2dnfpqr61K1QyHoH3tOD1boDOkuCfzX6DJcsu6Q6z4AAAAAElFTkSuQmCC" alt="Dubai Holding">
+    <span class="div" aria-hidden="true"></span>
+    <div><h1>Instagram Live Dashboard</h1><div class="sub" id="status" aria-live="polite">Loading…</div></div>
+  </div>
   <div style="display:flex;gap:8px">
     <select id="count" aria-label="Posts per account">
       <option value="6">6 posts</option><option value="12" selected>12 posts</option><option value="24">24 posts</option>
@@ -46,11 +61,10 @@
   </div>
 </header>
 <div class="cols" id="cols"></div>
+<footer>Internal monitoring view · Public Instagram data · Refreshed hourly</footer>
 <script>
-/* Reads data.json, which GitHub refreshes every hour. No token in this file. */
 const JSON_URL = "data.json";
 const AUTO_REFRESH_MIN = 30;
-
 const $ = id => document.getElementById(id);
 const esc = s => (s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const num = n => (n==null?"–":Number(n).toLocaleString());
