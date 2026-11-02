@@ -28,7 +28,7 @@
   .prof img{width:52px;height:52px;border-radius:50%;object-fit:cover;background:var(--dh-beige)}
   .prof h2{margin:0;font-size:16px;color:var(--dh-black)}
   .prof a{color:var(--dh-grey)}
-  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+  .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
   .kpi{background:var(--bg);border-radius:8px;padding:10px 6px;text-align:center}
   .kpi b{display:block;font-size:17px;color:var(--dh-black)}
   .kpi span{font-size:11px;color:var(--muted)}
@@ -83,7 +83,6 @@ function renderAccount(a, limit){
       <div class="kpi"><b>${num(a.followers_count)}</b><span>Followers</span></div>
       <div class="kpi"><b>${num(a.media_count)}</b><span>Total posts</span></div>
       <div class="kpi"><b>${num(likes)}</b><span>Likes (shown)</span></div>
-      <div class="kpi"><b>${avgEng}</b><span>Avg engagement</span></div>
     </div>
     <div class="grid">${posts.map(p=>{
       const img = p.media_type==="VIDEO" ? p.thumbnail_url : p.media_url;
